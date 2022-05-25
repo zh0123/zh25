@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zh.dao.TaskMapper">
+
+
+    <insert id="insert" parameterType="com.zh.domain.Task">
+        insert into tasks(taskname,msg,pubname,pubphone) values(#{taskname},#{msg},#{pubname},#{pubphone})
+    </insert>
+    <update id="updateTag" parameterType="com.zh.domain.UserTask">
+       update usertask set tag=#{tag} where path=#{path}
+    </update>
+    <insert id="insertTask" parameterType="com.zh.domain.UserTask">
+        insert into usertask(username,taskname,path) values(#{username},#{taskname},#{path})
+    </insert>
+    <select id="queryOne" resultType="com.zh.domain.PubUser">
+        select * from pubuser where username=#{username} or email=#{email}
+    </select>
+    <select id="query" resultType="com.zh.domain.Task">
+        select * from tasks where taskname=#{taskname}
+    </select>
+
+    <select id="queryAll" resultType="com.zh.domain.Task">
+        select * from tasks
+    </select>
+    <select id="find" resultType="com.zh.domain.UserTask">
+        select * from usertask where username=#{username} and taskname=#{taskname}
+    </select>
+    <select id="findTag" resultType="com.zh.domain.UserTask">
+        select * from usertask where path=#{path}
+    </select>
+
+</mapper>

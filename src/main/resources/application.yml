@@ -1,0 +1,32 @@
+server:
+  port: 8080
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  datasource:
+    name: mydb
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/db10?serverTimezone=UTC
+    username: root
+    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+multipart:
+  maxRequestSize: 2000MB
+  maxFileSize: 2000MB
+
+mybatis:
+  mapper-locations: classpath*:/mybatis/mapper/*Mapper.xml
+logging:
+  level:
+    com.atguigu.crowd.mapper: debug
+    com.atguigu.crowd.test: debug
+
+aliyun:
+  oss:
+    access-key-id: LTAI5tC8ACZwLngWUPPfDtfw
+    access-key-secret: kOsBgxKG0Iv872rmQ5khZPIaT4f9Xj
+    bucket-domain: http://liuyike0106.oss-cn-shenzhen.aliyuncs.com
+    bucket-name: liuyike0106
+    end-point: http://oss-cn-shenzhen.aliyuncs.com

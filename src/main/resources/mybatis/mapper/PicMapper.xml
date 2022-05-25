@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zh.dao.PicMapper">
+
+
+    <insert id="insert" parameterType="com.zh.domain.Picture">
+        insert into tasks(path,tid) values(#{path},#{tid})
+    </insert>
+    <insert id="insertPathList">
+        insert into picpath (tid, path)
+        values
+        <foreach collection="pathList" item="path" separator=",">(#{tid},#{path})</foreach>
+    </insert>
+    <select id="queryOne" resultType="com.zh.domain.PubUser">
+        select * from pubuser where username=#{username} or email=#{email}
+    </select>
+    <select id="query" resultType="com.zh.domain.Task">
+        select * from tasks where taskname=#{taskname}
+    </select>
+    <select id="queryInfo" resultType="com.zh.domain.TaskInfo">
+        select t.taskname,t.msg,t.pubname,t.pubphone,p.path  from tasks t LEFT JOIN picpath p on p.tid=t.id
+    </select>
+
+    <select id="queryAll" resultType="com.zh.domain.Picture">
+        select p.path,p.tid  from picpath p where p.tid=#{tid}
+    </select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zh.dao.VideoMapper">
+
+
+    <insert id="insert" parameterType="com.zh.domain.Video">
+        insert into video(vpath,pubname) values(#{vpath},#{pubname})
+    </insert>
+
+    <select id="query" resultType="com.zh.domain.Video">
+        select * from video where vpath=#{vpath} and pubname=#{pubname}
+    </select>
+
+
+
+</mapper>

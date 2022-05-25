@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>登录</title>
+    <meta charset="UTF-8">
+    <base th:href="@{/}" />
+    <meta name="decorator" content="default"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        *{
+            margin: 0 auto;
+        }
+        body{
+            background-color: #343a40;
+        }
+        .container{
+            position: relative;
+            top: 100px;
+        }
+        .news-nav{
+            clear: both;
+            height: 80px;
+            margin-left: 10px;
+            margin-right: 10px;
+            width: 300px;
+            margin: 0 auto;
+        }
+        .news-nav li{
+            float: left;
+            list-style-type: none;
+            margin: 0 10px;
+            font-size: 30px;
+            display: block;
+            width: 86px;
+            height: 79px;
+            text-align: center;
+            line-height: 79px;
+            font-weight: bold;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .news-nav li.on{
+            color: #74dcff;
+            border-bottom-color: #74dcff;
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+        }
+        #index-news-list-2{
+            display: none;
+        }
+        .modal-dialog{
+            max-width: 100% !important;
+        }
+        .modal-content{
+            background:rgba(0,0,0,0.3);
+            width: 700px;
+        }
+        .loginForm{
+            width: 400px;
+        }
+        .loginForm .form-group{
+            margin: 30px 0;
+        }
+        .loginForm .form-group .form-control{
+            height: 40px;
+            font-size: 15px;
+        }
+        input[type="checkbox"]{
+            position:relative;
+            top:-2px;
+            vertical-align: middle;
+            cursor: pointer;
+            zoom:1.6;
+        }
+        input[type="radio"]{
+            position:relative;
+            top:-3px;
+            vertical-align: middle;
+            cursor: pointer;
+            zoom:1.6;
+        }
+        .btn-primary{
+            background-color: #3e4963;
+            border: 0px solid transparent;
+            width: 400px;
+            height: 50px;
+            font-size: 24px;
+            font-family: STKaiti;
+        }
+        label{
+            color: #fff;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="modal-dialog" id="login_form">
+        <div class="modal-content">
+            <h1 align="center"  style="color:blue">图像数据标注网站</h1>
+            <div class="modal-title">
+                <ul class="news-nav js-nav-title">
+                    <li class="on" data="login">登录</li>
+                    <li class="" data="register">注册</li>
+                </ul>
+            </div>
+            <div class="modal-body index-news-list" id="index-news-list-1">
+                <form class="loginForm" id="loginForm" action="login" method="post" onsubmit="return login()">
+                    <div class="form-group">
+                        <p th:text="${msg}" style="color:blue"></p>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control required" name="username" id="name" type="text" placeholder="请输入用户名">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control required" name="password" id="password" type="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                    <select class="form-control required" id="user_type " name="user_type">
+                        　　　　<option value="任务发布者">任务发布者</option>
+                        　　　　<option value="图像标注者">图像标注者</option>
+                        　　　　</select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">登录</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-body index-news-list" id="index-news-list-2">
+                <form class="loginForm" name="form1" id="registerForm" action="save" method="post" onsubmit="return checkRepwd()">
+                    <div class="form-group">
+                        <select class="form-control required" id="user_type " name="user_type">
+                            　　　　<option value="任务发布者">任务发布者</option>
+                            　　　　<option value="图像标注者">图像标注者</option>
+                            　　　　</select>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control required" name="username" id="username" type="text" placeholder="请输入要注册的用户名">
+                    </div>
+
+                    <span id="s_username"></span>
+
+                    <div class="form-group">
+                        <input class="form-control required" name="email" id="email" type="text" placeholder="请输入要注册的邮箱">
+
+                    <div class="form-group">
+                        <span id="s_email"></span>
+                        <input class="form-control required" name="password" id="rePassword" type="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control required" name="rePassword" id="rePassword1" type="password" placeholder="请再次输入密码">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">注册</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".js-nav-title li").click(function(){
+            $(this).attr("class","on");
+            $(this).siblings().attr("class","");
+            var index = $(".js-nav-title li").index(this);
+            $(".index-news-list").css("display","none");
+            $("#index-news-list-"+(index+1)).css("display","block");
+        });
+    });
+
+    function login() {
+        // console.info("点击了登录");
+        var userName = $("#name").val();
+        // console.info(userName)
+        var userPass = $("#password").val();
+        // console.info(userPass);
+        if (userName == "" || userName == null) {
+            alert("用户名不能为空");
+            return false;
+        } else if (userPass == "" || userPass == null) {
+            alert("密码不能为空");
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function checkRepwd(){
+        var pwd=$("#rePassword").val();
+        var repwd=$("#rePassword1").val();
+        var password = document.form1.password.value;
+        //检查邮箱格式
+        var email = document.form1.email.value;
+        if(!(/.+@.+\.[a-zA-Z]{2,4}$/.test(email))){
+            alert("邮箱格式不正确!");
+            return false;
+        }else if(password.length < 6){
+            alert("密码至少六位！");
+            return false;
+        }else if(pwd!=repwd){
+            // alert(pwd);
+            // alert(repwd);
+            alert("两次输入的密码不一致");
+            return false;
+        }
+
+        return true;
+    }
+    var contextPath = "${pageContext.request.contextPath}";
+    //给username绑定一个失去焦点的函数
+    $("#username").blur(function(){
+        //获得输入框的值
+        var username = $(this).val();
+        var user_type=document.form1.user_type.value;
+        //发送ajax请求
+        //data:期望服务器响应的数据格式
+        $.get("/query",{username:username,user_type:user_type},function(data){
+            console.log(data);
+            //判断用户名是否存在
+            data = eval(data); //解析JSON数据
+            //得到第一条JSON数据
+            data = data[0];
+            if (data.msg == 0) { $("#s_username").html(""); }
+
+            else if (data.msg == 1) { $("#s_username").html("用户名已存在").css("color","red"); }
+        })
+    });
+    $("#user_type").blur(function(){
+        //获得输入框的值
+        var user_type=document.form1.user_type.value;
+        var email = document.form1.email.value;
+        //发送ajax请求
+        //data:期望服务器响应的数据格式
+        $.get("/query",{user_type:user_type,email:email},function(data){
+            console.log(data);
+            //判断用户名是否存在
+            data = eval(data); //解析JSON数据
+            //得到第一条JSON数据
+            data = data[0];
+            // result 等于 0，说明用户名不存在   // result 等于 1，说明用户名存在
+            if (data.msg == 0) { $("#s_email").html(""); }
+
+            else if (data.msg == 2) { $("#s_email").html("邮箱已存在").css("color","red"); }
+        })
+    });
+    $("#email").blur(function(){
+        //获得输入框的值
+        var user_type=document.form1.user_type.value;
+        var email = document.form1.email.value;
+        //发送ajax请求
+        //data:期望服务器响应的数据格式
+        $.get("/query",{user_type:user_type,email:email},function(data){
+            console.log(data);
+            //判断用户名是否存在
+            data = eval(data); //解析JSON数据
+            //得到第一条JSON数据
+            data = data[0];
+            // result 等于 0，说明用户名不存在   // result 等于 1，说明用户名存在
+            if (data.msg == 0) { $("#s_email").html(""); }
+
+            else if (data.msg == 2) { $("#s_email").html("邮箱已存在").css("color","red"); }
+        })
+    });
+
+
+</script>
+</body>
+</html>
