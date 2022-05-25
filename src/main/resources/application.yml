@@ -25,8 +25,8 @@ logging:
 
 aliyun:
   oss:
-    access-key-id: LTAI5tC8ACZwLngWUPPfDtfw
-    access-key-secret: kOsBgxKG0Iv872rmQ5khZPIaT4f9Xj
+    access-key-id: LTAI5tC8ACZw
+    access-key-secret: kOsBgxKG0Iv87
     bucket-domain: http://liuyike0106.oss-cn-shenzhen.aliyuncs.com
     bucket-name: liuyike0106
     end-point: http://oss-cn-shenzhen.aliyuncs.com
